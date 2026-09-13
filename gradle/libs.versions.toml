@@ -1,0 +1,38 @@
+[versions]
+agp = "9.2.1"
+kotlin = "2.2.10"
+coreKtx = "1.17.0"
+activityCompose = "1.11.0"
+lifecycle = "2.9.4"
+navigation = "2.9.4"
+datastore = "1.1.7"
+documentfile = "1.1.0"
+material3 = "1.5.0-alpha28"
+composeUi = "1.12.0-beta01"
+coroutines = "1.10.2"
+coil = "2.7.0"
+materialIcons = "1.7.8"
+junit = "4.13.2"
+
+[libraries]
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "composeUi" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "composeUi" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "composeUi" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "composeUi" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIcons" }
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

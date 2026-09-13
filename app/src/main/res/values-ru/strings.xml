@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Приватное ИИ-увеличение на устройстве</string><string name="upscale">Увеличить</string><string name="settings">Настройки</string>
+    <string name="choose_images">Выбрать изображения</string><string name="choose_images_hint">Выберите одно изображение или целую группу</string><string name="model">Модель</string>
+    <string name="scale">Масштаб</string><string name="output">Вывод</string><string name="format">Формат</string><string name="start_upscale">Начать увеличение</string>
+    <string name="download_and_start">Скачать модель и начать</string><string name="advanced">Дополнительно</string><string name="appearance">Оформление</string><string name="theme">Тема</string>
+    <string name="models">Модели</string><string name="processing">Обработка</string><string name="about">О Pixora</string><string name="done">Готово</string>
+</resources>

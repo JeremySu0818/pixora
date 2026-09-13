@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Escalado privado con IA en tu dispositivo</string><string name="upscale">Mejorar</string><string name="settings">Ajustes</string>
+    <string name="choose_images">Elegir imágenes</string><string name="choose_images_hint">Selecciona una imagen o un lote completo</string><string name="model">Modelo</string>
+    <string name="scale">Escala</string><string name="output">Salida</string><string name="format">Formato</string><string name="start_upscale">Iniciar mejora</string>
+    <string name="download_and_start">Descargar modelo e iniciar</string><string name="advanced">Avanzado</string><string name="appearance">Apariencia</string><string name="theme">Tema</string>
+    <string name="models">Modelos</string><string name="processing">Procesando</string><string name="about">Acerca de Pixora</string><string name="done">Listo</string>
+</resources>

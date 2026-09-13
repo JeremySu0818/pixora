@@ -1,0 +1,1 @@
+-keep class org.pixora.app.inference.NativeUpscaler { *; }

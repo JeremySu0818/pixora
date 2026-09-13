@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">आपके डिवाइस पर निजी AI अपस्केलिंग</string><string name="upscale">अपस्केल</string><string name="settings">सेटिंग</string>
+    <string name="choose_images">चित्र चुनें</string><string name="choose_images_hint">एक चित्र या पूरा बैच चुनें</string><string name="model">मॉडल</string>
+    <string name="scale">स्केल</string><string name="output">आउटपुट</string><string name="format">फ़ॉर्मैट</string><string name="start_upscale">अपस्केल शुरू करें</string>
+    <string name="download_and_start">मॉडल डाउनलोड करके शुरू करें</string><string name="advanced">उन्नत</string><string name="appearance">रूप</string><string name="theme">थीम</string>
+    <string name="models">मॉडल</string><string name="processing">प्रोसेस हो रहा है</string><string name="about">Pixora के बारे में</string><string name="done">पूर्ण</string>
+</resources>

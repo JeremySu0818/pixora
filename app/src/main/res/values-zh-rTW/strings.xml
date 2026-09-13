@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">在裝置上私密地進行 AI 影像放大</string><string name="upscale">升圖</string><string name="settings">設定</string>
+    <string name="choose_images">選擇圖片</string><string name="choose_images_hint">選擇單張圖片或整個批次</string><string name="model">模型</string>
+    <string name="scale">放大比例</string><string name="output">輸出</string><string name="format">格式</string><string name="start_upscale">開始升圖</string>
+    <string name="download_and_start">下載模型並開始</string><string name="advanced">進階</string><string name="appearance">外觀</string><string name="theme">主題</string>
+    <string name="models">模型</string><string name="processing">處理中</string><string name="about">關於 Pixora</string><string name="done">完成</string>
+</resources>

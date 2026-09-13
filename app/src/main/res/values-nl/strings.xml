@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Privé AI-opschaling op je apparaat</string><string name="upscale">Opschalen</string><string name="settings">Instellingen</string>
+    <string name="choose_images">Afbeeldingen kiezen</string><string name="choose_images_hint">Selecteer één afbeelding of een hele batch</string><string name="model">Model</string>
+    <string name="scale">Schaal</string><string name="output">Uitvoer</string><string name="format">Formaat</string><string name="start_upscale">Opschalen starten</string>
+    <string name="download_and_start">Model downloaden en starten</string><string name="advanced">Geavanceerd</string><string name="appearance">Weergave</string><string name="theme">Thema</string>
+    <string name="models">Modellen</string><string name="processing">Verwerken</string><string name="about">Over Pixora</string><string name="done">Klaar</string>
+</resources>

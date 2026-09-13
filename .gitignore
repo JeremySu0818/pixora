@@ -1,0 +1,48 @@
+# Gradle and Android Studio generated state
+.gradle/
+**/build/
+**/.cxx/
+.externalNativeBuild/
+local.properties
+
+# Android Studio project-local metadata
+.idea/*
+**/.idea/*
+!.idea/.gitignore
+!.idea/codeStyles/
+!.idea/codeStyles/**
+!.idea/runConfigurations/
+!.idea/runConfigurations/**
+*.iml
+
+# Build outputs and local captures
+**/outputs/
+captures/
+*.apk
+*.aab
+
+# Native build output and downloaded toolchains
+app/src/main/cpp/third_party/ncnn-20260526-android-vulkan/
+**/test-results/
+*.hprof
+
+# Signing keys, credentials and machine-local configuration
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+keystore.properties
+google-services.json
+firebase-debug.log
+
+# Temporary and editor files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.orig
+*.rej
+.DS_Store
+Thumbs.db

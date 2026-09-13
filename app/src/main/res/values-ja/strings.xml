@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">端末上でプライベートに AI 高画質化</string><string name="upscale">高画質化</string><string name="settings">設定</string>
+    <string name="choose_images">画像を選択</string><string name="choose_images_hint">1 枚の画像またはバッチ全体を選択</string><string name="model">モデル</string>
+    <string name="scale">倍率</string><string name="output">出力</string><string name="format">形式</string><string name="start_upscale">高画質化を開始</string>
+    <string name="download_and_start">モデルをダウンロードして開始</string><string name="advanced">詳細設定</string><string name="appearance">外観</string><string name="theme">テーマ</string>
+    <string name="models">モデル</string><string name="processing">処理中</string><string name="about">Pixora について</string><string name="done">完了</string>
+</resources>

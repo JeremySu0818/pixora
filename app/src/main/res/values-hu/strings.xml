@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Privát AI-felskálázás az eszközön</string><string name="upscale">Felskálázás</string><string name="settings">Beállítások</string>
+    <string name="choose_images">Képek kiválasztása</string><string name="choose_images_hint">Válasszon egy képet vagy egy teljes köteget</string><string name="model">Modell</string>
+    <string name="scale">Méretezés</string><string name="output">Kimenet</string><string name="format">Formátum</string><string name="start_upscale">Felskálázás indítása</string>
+    <string name="download_and_start">Modell letöltése és indítás</string><string name="advanced">Speciális</string><string name="appearance">Megjelenés</string><string name="theme">Téma</string>
+    <string name="models">Modellek</string><string name="processing">Feldolgozás</string><string name="about">A Pixora névjegye</string><string name="done">Kész</string>
+</resources>

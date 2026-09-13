@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Phóng to AI riêng tư ngay trên thiết bị</string><string name="upscale">Phóng to</string><string name="settings">Cài đặt</string>
+    <string name="choose_images">Chọn ảnh</string><string name="choose_images_hint">Chọn một ảnh hoặc cả một loạt</string><string name="model">Mô hình</string>
+    <string name="scale">Tỷ lệ</string><string name="output">Đầu ra</string><string name="format">Định dạng</string><string name="start_upscale">Bắt đầu phóng to</string>
+    <string name="download_and_start">Tải mô hình và bắt đầu</string><string name="advanced">Nâng cao</string><string name="appearance">Giao diện</string><string name="theme">Chủ đề</string>
+    <string name="models">Mô hình</string><string name="processing">Đang xử lý</string><string name="about">Giới thiệu Pixora</string><string name="done">Xong</string>
+</resources>

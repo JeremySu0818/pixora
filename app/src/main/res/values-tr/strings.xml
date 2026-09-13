@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Cihazınızda özel yapay zekâ büyütme</string><string name="upscale">Büyüt</string><string name="settings">Ayarlar</string>
+    <string name="choose_images">Görsel seç</string><string name="choose_images_hint">Bir görsel veya bütün bir toplu iş seçin</string><string name="model">Model</string>
+    <string name="scale">Ölçek</string><string name="output">Çıktı</string><string name="format">Biçim</string><string name="start_upscale">Büyütmeyi başlat</string>
+    <string name="download_and_start">Modeli indir ve başlat</string><string name="advanced">Gelişmiş</string><string name="appearance">Görünüm</string><string name="theme">Tema</string>
+    <string name="models">Modeller</string><string name="processing">İşleniyor</string><string name="about">Pixora hakkında</string><string name="done">Bitti</string>
+</resources>

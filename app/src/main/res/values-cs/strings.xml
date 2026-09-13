@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Soukromé AI zvětšování ve vašem zařízení</string><string name="upscale">Zvětšit</string><string name="settings">Nastavení</string>
+    <string name="choose_images">Vybrat obrázky</string><string name="choose_images_hint">Vyberte jeden obrázek nebo celou dávku</string><string name="model">Model</string>
+    <string name="scale">Měřítko</string><string name="output">Výstup</string><string name="format">Formát</string><string name="start_upscale">Spustit zvětšení</string>
+    <string name="download_and_start">Stáhnout model a spustit</string><string name="advanced">Pokročilé</string><string name="appearance">Vzhled</string><string name="theme">Motiv</string>
+    <string name="models">Modely</string><string name="processing">Zpracování</string><string name="about">O aplikaci Pixora</string><string name="done">Hotovo</string>
+</resources>

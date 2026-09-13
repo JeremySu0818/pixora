@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">기기에서 비공개 AI 업스케일링</string><string name="upscale">업스케일</string><string name="settings">설정</string>
+    <string name="choose_images">이미지 선택</string><string name="choose_images_hint">이미지 한 장 또는 전체 묶음 선택</string><string name="model">모델</string>
+    <string name="scale">배율</string><string name="output">출력</string><string name="format">형식</string><string name="start_upscale">업스케일 시작</string>
+    <string name="download_and_start">모델 다운로드 후 시작</string><string name="advanced">고급</string><string name="appearance">화면</string><string name="theme">테마</string>
+    <string name="models">모델</string><string name="processing">처리 중</string><string name="about">Pixora 정보</string><string name="done">완료</string>
+</resources>

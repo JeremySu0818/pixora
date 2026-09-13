@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Private KI-Skalierung auf deinem Gerät</string><string name="upscale">Hochskalieren</string><string name="settings">Einstellungen</string>
+    <string name="choose_images">Bilder auswählen</string><string name="choose_images_hint">Ein Bild oder einen ganzen Stapel auswählen</string><string name="model">Modell</string>
+    <string name="scale">Skalierung</string><string name="output">Ausgabe</string><string name="format">Format</string><string name="start_upscale">Skalierung starten</string>
+    <string name="download_and_start">Modell laden und starten</string><string name="advanced">Erweitert</string><string name="appearance">Darstellung</string><string name="theme">Design</string>
+    <string name="models">Modelle</string><string name="processing">Verarbeitung</string><string name="about">Über Pixora</string><string name="done">Fertig</string>
+</resources>

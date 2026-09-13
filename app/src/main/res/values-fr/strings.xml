@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Agrandissement privé par IA sur votre appareil</string><string name="upscale">Agrandir</string><string name="settings">Paramètres</string>
+    <string name="choose_images">Choisir des images</string><string name="choose_images_hint">Sélectionnez une image ou un lot entier</string><string name="model">Modèle</string>
+    <string name="scale">Échelle</string><string name="output">Sortie</string><string name="format">Format</string><string name="start_upscale">Lancer l’agrandissement</string>
+    <string name="download_and_start">Télécharger le modèle et démarrer</string><string name="advanced">Avancé</string><string name="appearance">Apparence</string><string name="theme">Thème</string>
+    <string name="models">Modèles</string><string name="processing">Traitement</string><string name="about">À propos de Pixora</string><string name="done">Terminé</string>
+</resources>

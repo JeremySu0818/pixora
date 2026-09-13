@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Upscaling AI privato sul tuo dispositivo</string><string name="upscale">Ingrandisci</string><string name="settings">Impostazioni</string>
+    <string name="choose_images">Scegli immagini</string><string name="choose_images_hint">Seleziona un’immagine o un intero gruppo</string><string name="model">Modello</string>
+    <string name="scale">Scala</string><string name="output">Output</string><string name="format">Formato</string><string name="start_upscale">Avvia ingrandimento</string>
+    <string name="download_and_start">Scarica il modello e avvia</string><string name="advanced">Avanzate</string><string name="appearance">Aspetto</string><string name="theme">Tema</string>
+    <string name="models">Modelli</string><string name="processing">Elaborazione</string><string name="about">Informazioni su Pixora</string><string name="done">Fine</string>
+</resources>

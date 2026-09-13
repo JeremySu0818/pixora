@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Peningkatan AI privat di perangkat Anda</string><string name="upscale">Tingkatkan</string><string name="settings">Setelan</string>
+    <string name="choose_images">Pilih gambar</string><string name="choose_images_hint">Pilih satu gambar atau seluruh kelompok</string><string name="model">Model</string>
+    <string name="scale">Skala</string><string name="output">Keluaran</string><string name="format">Format</string><string name="start_upscale">Mulai peningkatan</string>
+    <string name="download_and_start">Unduh model dan mulai</string><string name="advanced">Lanjutan</string><string name="appearance">Tampilan</string><string name="theme">Tema</string>
+    <string name="models">Model</string><string name="processing">Memproses</string><string name="about">Tentang Pixora</string><string name="done">Selesai</string>
+</resources>

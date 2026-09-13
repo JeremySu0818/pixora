@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">تكبير خاص بالذكاء الاصطناعي على جهازك</string><string name="upscale">تكبير</string><string name="settings">الإعدادات</string>
+    <string name="choose_images">اختر الصور</string><string name="choose_images_hint">اختر صورة واحدة أو دفعة كاملة</string><string name="model">النموذج</string>
+    <string name="scale">المقياس</string><string name="output">الإخراج</string><string name="format">التنسيق</string><string name="start_upscale">بدء التكبير</string>
+    <string name="download_and_start">تنزيل النموذج والبدء</string><string name="advanced">متقدم</string><string name="appearance">المظهر</string><string name="theme">السمة</string>
+    <string name="models">النماذج</string><string name="processing">جارٍ المعالجة</string><string name="about">حول Pixora</string><string name="done">تم</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_tagline">Prywatne skalowanie AI na urządzeniu</string><string name="upscale">Powiększ</string><string name="settings">Ustawienia</string>
+    <string name="choose_images">Wybierz obrazy</string><string name="choose_images_hint">Wybierz jeden obraz lub całą partię</string><string name="model">Model</string>
+    <string name="scale">Skala</string><string name="output">Wyjście</string><string name="format">Format</string><string name="start_upscale">Rozpocznij powiększanie</string>
+    <string name="download_and_start">Pobierz model i rozpocznij</string><string name="advanced">Zaawansowane</string><string name="appearance">Wygląd</string><string name="theme">Motyw</string>
+    <string name="models">Modele</string><string name="processing">Przetwarzanie</string><string name="about">O Pixora</string><string name="done">Gotowe</string>
+</resources>
