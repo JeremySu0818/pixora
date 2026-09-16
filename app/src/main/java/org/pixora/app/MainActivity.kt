@@ -344,17 +344,14 @@ private fun AdvancedCard(options: UpscaleOptions, update: ((UpscaleOptions) -> U
         AnimatedVisibility(expanded) {
             Column(Modifier.padding(start = 18.dp, end = 18.dp, bottom = 18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("${stringResource(R.string.tile_size)}: ${if (options.tileSize == 0) "Auto" else options.tileSize}")
-                val tileSlider = rememberSliderState(
-                    value = when (options.tileSize) { 64 -> 1f; 128 -> 2f; 256 -> 3f; else -> 0f },
-                    steps = 2,
-                    trackRange = 0f..3f,
-                )
                 Slider(
-                    state = tileSlider,
+                    value = when (options.tileSize) { 64 -> 1f; 128 -> 2f; 256 -> 3f; else -> 0f },
                     onValueChange = { value ->
                         val sizes = intArrayOf(0, 64, 128, 256)
                         update { it.copy(tileSize = sizes[value.toInt().coerceIn(0, 3)]) }
                     },
+                    steps = 2,
+                    valueRange = 0f..3f,
                 )
             }
         }
@@ -364,9 +361,23 @@ private fun AdvancedCard(options: UpscaleOptions, update: ((UpscaleOptions) -> U
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ProcessingCard(progress: UpscaleProgress, onCancel: () -> Unit) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress.fraction.coerceIn(0f, 1f),
+        animationSpec = WavyProgressIndicatorDefaults.ProgressAnimationSpec,
+        label = "upscale progress",
+    )
     ElevatedCard(shape = MaterialTheme.shapes.extraLarge, modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(24.dp), verticalAlignment = Alignment.CenterVertically) {
-            LoadingIndicator(progress = { progress.fraction }, modifier = Modifier.size(56.dp))
+            Box(Modifier.size(64.dp), contentAlignment = Alignment.Center) {
+                CircularWavyProgressIndicator(
+                    progress = { animatedProgress },
+                    modifier = Modifier.fillMaxSize(),
+                )
+                Text(
+                    text = "${(animatedProgress * 100).toInt()}%",
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
             Spacer(Modifier.width(18.dp))
             Column(Modifier.weight(1f)) {
                 Text(if (progress.stage == JobStage.DOWNLOADING) stringResource(R.string.model_download) else stringResource(R.string.processing), style = MaterialTheme.typography.titleLarge)
