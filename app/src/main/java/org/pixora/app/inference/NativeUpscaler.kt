@@ -17,5 +17,11 @@ object NativeUpscaler {
         targetScale: Int,
         tileSize: Int,
         useVulkan: Boolean,
+        progressCallback: ProgressCallback,
     ): String?
+}
+
+fun interface ProgressCallback {
+    /** Returns false when native processing should stop at the next tile boundary. */
+    fun onProgress(fraction: Float): Boolean
 }
