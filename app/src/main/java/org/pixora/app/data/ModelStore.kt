@@ -33,7 +33,7 @@ class ModelStore(private val context: Context) {
         try {
             connection.connect()
             check(connection.responseCode in 200..299) { "HTTP ${connection.responseCode}" }
-            val total = connection.contentLengthLong.coerceAtLeast(1L)
+            val total = connection.contentLengthLong.takeIf { it > 0L }
             connection.inputStream.use { input ->
                 pending.outputStream().buffered().use { output ->
                     val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
@@ -43,12 +43,13 @@ class ModelStore(private val context: Context) {
                         if (count < 0) break
                         output.write(buffer, 0, count)
                         copied += count
-                        onProgress(offset + weight * copied.toFloat() / total)
+                        total?.let { onProgress(offset + weight * copied.toFloat() / it) }
                     }
                 }
             }
             check(pending.length() > 0) { "Empty model download" }
             check(pending.renameTo(target)) { "Could not install model" }
+            onProgress(offset + weight)
         } catch (error: Throwable) {
             pending.delete()
             throw error
