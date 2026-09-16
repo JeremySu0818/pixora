@@ -7,11 +7,13 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import org.pixora.app.data.InputImage
 import org.pixora.app.data.OutputFormat
 import org.pixora.app.data.UpscaleOptions
 import java.io.File
+import kotlin.coroutines.coroutineContext
 
 class UpscaleEngine(private val context: Context) {
     val hasVulkan: Boolean
@@ -21,6 +23,7 @@ class UpscaleEngine(private val context: Context) {
         input: InputImage,
         options: UpscaleOptions,
         modelDirectory: File,
+        onProgress: (Float) -> Boolean,
     ): Uri = withContext(Dispatchers.IO) {
         check(NativeUpscaler.available) { "Native inference runtime is unavailable" }
         val source = context.contentResolver.openInputStream(input.uri)?.use(BitmapFactory::decodeStream)
@@ -31,6 +34,7 @@ class UpscaleEngine(private val context: Context) {
         val software = source.copy(Bitmap.Config.ARGB_8888, false)
         if (software !== source) source.recycle()
         val output = Bitmap.createBitmap(software.width * options.scale, software.height * options.scale, Bitmap.Config.ARGB_8888)
+        val processingJob = coroutineContext[Job]
         try {
             val id = options.modelId
             val error = NativeUpscaler.upscale(
@@ -41,6 +45,14 @@ class UpscaleEngine(private val context: Context) {
                 options.scale,
                 options.tileSize,
                 hasVulkan,
+                ProgressCallback { fraction ->
+                    if (processingJob?.isActive != true) {
+                        false
+                    } else {
+                        onProgress(fraction)
+                        true
+                    }
+                },
             )
             check(error == null) { error ?: "Inference failed" }
             saveOutput(output, input.name, options)
@@ -79,6 +91,7 @@ class UpscaleEngine(private val context: Context) {
         }
         return target
     }
+
 }
 
 fun Context.displayName(uri: Uri): String {

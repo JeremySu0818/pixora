@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,6 +34,8 @@ class PixoraViewModel(application: Application) : AndroidViewModel(application) 
     private val _installedModels = MutableStateFlow(modelStore.installedIds())
     val installedModels: StateFlow<Set<String>> = _installedModels.asStateFlow()
     private var job: Job? = null
+    private val progressLock = Any()
+    private var activeRunId = 0L
 
     val hasVulkan: Boolean get() = engine.hasVulkan
 
@@ -75,34 +78,67 @@ class PixoraViewModel(application: Application) : AndroidViewModel(application) 
         if (job?.isActive == true || _inputs.value.isEmpty()) return
         val snapshot = _options.value
         val selected = ModelCatalog.builtIn.first { it.id == snapshot.modelId }
+        val runId = beginRun()
         job = viewModelScope.launch {
             runCatching {
                 if (!modelStore.isInstalled(selected.id)) {
-                    _progress.value = UpscaleProgress(JobStage.DOWNLOADING, total = _inputs.value.size)
+                    updateProgress(runId) { UpscaleProgress(JobStage.DOWNLOADING, total = _inputs.value.size) }
                     modelStore.download(selected) { fraction ->
-                        _progress.value = _progress.value.copy(fraction = fraction)
+                        updateProgress(runId) { it.copy(fraction = fraction) }
                     }
                     _installedModels.value = modelStore.installedIds()
                 }
                 if (snapshot.remember) settingsRepository.saveOptions(snapshot)
+                val images = _inputs.value
                 val outputs = mutableListOf<Uri>()
-                _inputs.value.forEachIndexed { index, image ->
-                    _progress.value = UpscaleProgress(
-                        stage = JobStage.PROCESSING,
-                        completed = index,
-                        total = _inputs.value.size,
-                        fraction = index.toFloat() / _inputs.value.size,
-                        currentName = image.name,
-                        outputs = outputs.toList(),
-                    )
-                    outputs += engine.process(image, snapshot, modelStore.directory)
+                images.forEachIndexed { index, image ->
+                    updateProgress(runId) {
+                        UpscaleProgress(
+                            stage = JobStage.PROCESSING,
+                            completed = index,
+                            total = images.size,
+                            fraction = index.toFloat() / images.size,
+                            currentName = image.name,
+                            outputs = outputs.toList(),
+                        )
+                    }
+                    outputs += engine.process(image, snapshot, modelStore.directory) { imageFraction ->
+                        updateProgress(runId) {
+                            it.copy(
+                                fraction = (index + imageFraction.coerceIn(0f, 1f)) / images.size,
+                            )
+                        }
+                        isRunActive(runId)
+                    }
                 }
-                _progress.value = UpscaleProgress(JobStage.COMPLETE, outputs.size, outputs.size, 1f, outputs = outputs)
+                updateProgress(runId) { UpscaleProgress(JobStage.COMPLETE, outputs.size, outputs.size, 1f, outputs = outputs) }
             }.onFailure { error ->
-                _progress.value = _progress.value.copy(stage = JobStage.ERROR, message = error.message ?: error.javaClass.simpleName)
+                if (error !is CancellationException) {
+                    updateProgress(runId) { it.copy(stage = JobStage.ERROR, message = error.message ?: error.javaClass.simpleName) }
+                }
             }
         }
     }
 
-    fun cancel() { job?.cancel(); _progress.value = UpscaleProgress() }
+    fun cancel() {
+        synchronized(progressLock) {
+            activeRunId += 1
+            _progress.value = UpscaleProgress()
+        }
+        job?.cancel()
+    }
+
+    private fun beginRun(): Long = synchronized(progressLock) {
+        ++activeRunId
+    }
+
+    private inline fun updateProgress(runId: Long, transform: (UpscaleProgress) -> UpscaleProgress) {
+        synchronized(progressLock) {
+            if (runId == activeRunId) _progress.value = transform(_progress.value)
+        }
+    }
+
+    private fun isRunActive(runId: Long): Boolean = synchronized(progressLock) {
+        runId == activeRunId
+    }
 }
