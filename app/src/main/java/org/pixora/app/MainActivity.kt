@@ -453,8 +453,11 @@ private fun ResultScreen(inputs: List<InputImage>, outputs: List<android.net.Uri
             Surface(Modifier.align(Alignment.TopStart).padding(12.dp), shape = CircleShape, color = MaterialTheme.colorScheme.scrim.copy(alpha = .64f)) { Text(stringResource(R.string.after), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) }
             Surface(Modifier.align(Alignment.TopEnd).padding(12.dp), shape = CircleShape, color = MaterialTheme.colorScheme.scrim.copy(alpha = .64f)) { Text(stringResource(R.string.before), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) }
         }
-        val comparisonSlider = rememberSliderState(value = divider)
-        Slider(state = comparisonSlider, onValueChange = { divider = it }, modifier = Modifier.semantics { contentDescription = "Comparison divider" })
+        Slider(
+            value = divider,
+            onValueChange = { divider = it },
+            modifier = Modifier.semantics { contentDescription = "Comparison divider" },
+        )
         if (outputs.size > 1) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             FilledTonalIconButton(onClick = { index = (index - 1).coerceAtLeast(0) }, enabled = index > 0) { Icon(Icons.Rounded.ChevronLeft, null) }
             FilledTonalIconButton(onClick = { index = (index + 1).coerceAtMost(outputs.lastIndex) }, enabled = index < outputs.lastIndex) { Icon(Icons.Rounded.ChevronRight, null) }
