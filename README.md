@@ -7,12 +7,15 @@ Pixora is a free, ad-free, open-source Android image upscaler. It runs locally w
 - Single-image and batch upscaling with 2×, 3× and 4× output
 - All seven current Upscayl desktop models, downloaded only when selected
 - PNG, JPEG and lossless WebP output through Android's Storage Access Framework
-- Remembered model, scale, format, output folder and appearance preferences
+- Remembered model, scale, format, output folder, appearance and UI language preferences
 - Material 3 Expressive theme, motion scheme, dynamic color, light/dark/system modes
 - Before/after comparison slider with pinch zoom and pan
 - Compact navigation bar and adaptive navigation rail layouts
 - Arabic, Czech, German, English, Spanish, French, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Dutch, Polish, Brazilian Portuguese, Russian, Turkish, Vietnamese, Simplified Chinese and Traditional Chinese
+- Immediate language switching in Settings, system language mode, JSON catalogs and Arabic RTL
 - arm64-v8a and x86_64 builds
+
+Translation maintenance: [tools/README.md](tools/README.md).
 
 ## Runtime
 

@@ -15,12 +15,14 @@ private val Context.dataStore by preferencesDataStore("pixora_settings")
 
 data class AppSettings(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val languageTag: String = AppLanguages.SYSTEM,
     val dynamicColor: Boolean = true,
     val options: UpscaleOptions = UpscaleOptions(),
 )
 
 class SettingsRepository(private val context: Context) {
     private object Keys {
+        val language = stringPreferencesKey("language")
         val theme = stringPreferencesKey("theme")
         val dynamic = booleanPreferencesKey("dynamic_color")
         val model = stringPreferencesKey("model")
@@ -33,6 +35,7 @@ class SettingsRepository(private val context: Context) {
 
     val settings: Flow<AppSettings> = context.dataStore.data.map { p ->
         AppSettings(
+            languageTag = AppLanguages.normalizeSelection(p[Keys.language] ?: AppLanguages.SYSTEM),
             themeMode = runCatching { ThemeMode.valueOf(p[Keys.theme] ?: "SYSTEM") }.getOrDefault(ThemeMode.SYSTEM),
             dynamicColor = p[Keys.dynamic] ?: true,
             options = UpscaleOptions(
@@ -44,6 +47,10 @@ class SettingsRepository(private val context: Context) {
                 tta = p[Keys.tta] ?: false,
             ),
         )
+    }
+
+    suspend fun saveLanguage(tag: String) = context.dataStore.edit {
+        it[Keys.language] = AppLanguages.normalizeSelection(tag)
     }
 
     suspend fun saveTheme(mode: ThemeMode) = context.dataStore.edit { it[Keys.theme] = mode.name }

@@ -55,6 +55,7 @@ class PixoraViewModel(application: Application) : AndroidViewModel(application) 
 
     fun clearImages() { _inputs.value = emptyList(); _progress.value = UpscaleProgress() }
     fun updateOptions(transform: (UpscaleOptions) -> UpscaleOptions) { _options.value = transform(_options.value) }
+    fun saveLanguage(tag: String) = viewModelScope.launch { settingsRepository.saveLanguage(tag) }
     fun saveTheme(mode: ThemeMode) = viewModelScope.launch { settingsRepository.saveTheme(mode) }
     fun saveDynamicColor(value: Boolean) = viewModelScope.launch { settingsRepository.saveDynamicColor(value) }
 

@@ -1,5 +1,6 @@
 # Gradle and Android Studio generated state
 .gradle/
+.kotlin/
 **/build/
 **/.cxx/
 .externalNativeBuild/

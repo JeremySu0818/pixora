@@ -30,6 +30,7 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +42,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -72,41 +72,43 @@ private fun PixoraRoot(vm: PixoraViewModel = viewModel()) {
     val installed by vm.installedModels.collectAsStateWithLifecycle()
     var destination by rememberSaveable { mutableStateOf(Destination.UPSCALE) }
 
-    PixoraTheme(settings.themeMode, settings.dynamicColor) {
-        BoxWithConstraints(Modifier.fillMaxSize()) {
-            val expanded = maxWidth >= 720.dp
-            Row(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
-                if (expanded) {
-                    NavigationRail(
-                        modifier = Modifier.fillMaxHeight(),
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        header = {
-                            Surface(
-                                color = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                                shape = MaterialTheme.shapes.large,
-                                modifier = Modifier.padding(vertical = 20.dp).size(52.dp),
-                            ) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.AutoAwesome, null) } }
-                        },
-                    ) {
-                        NavRailItems(destination, onSelect = { destination = it })
+    I18nProvider(settings.languageTag) {
+        PixoraTheme(settings.themeMode, settings.dynamicColor) {
+            BoxWithConstraints(Modifier.fillMaxSize()) {
+                val expanded = maxWidth >= 720.dp
+                Row(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+                    if (expanded) {
+                        NavigationRail(
+                            modifier = Modifier.fillMaxHeight(),
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            header = {
+                                Surface(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                                    shape = MaterialTheme.shapes.large,
+                                    modifier = Modifier.padding(vertical = 20.dp).size(52.dp),
+                                ) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.AutoAwesome, null) } }
+                            },
+                        ) {
+                            NavRailItems(destination, onSelect = { destination = it })
+                        }
                     }
-                }
-                Scaffold(
-                    modifier = Modifier.weight(1f),
-                    bottomBar = {
-                        if (!expanded) NavigationBar { NavBarItems(destination) { destination = it } }
-                    },
-                ) { padding ->
-                    AnimatedContent(
-                        targetState = destination,
-                        modifier = Modifier.fillMaxSize().padding(padding),
-                        transitionSpec = { (fadeIn() + scaleIn(initialScale = .98f)) togetherWith (fadeOut() + scaleOut(targetScale = 1.02f)) },
-                        label = "destination",
-                    ) { screen ->
-                        when (screen) {
-                            Destination.UPSCALE -> UpscaleScreen(inputs, options, progress, installed, vm)
-                            Destination.SETTINGS -> SettingsScreen(settings, installed, vm)
+                    Scaffold(
+                        modifier = Modifier.weight(1f),
+                        bottomBar = {
+                            if (!expanded) NavigationBar { NavBarItems(destination) { destination = it } }
+                        },
+                    ) { padding ->
+                        AnimatedContent(
+                            targetState = destination,
+                            modifier = Modifier.fillMaxSize().padding(padding),
+                            transitionSpec = { (fadeIn() + scaleIn(initialScale = .98f)) togetherWith (fadeOut() + scaleOut(targetScale = 1.02f)) },
+                            label = "destination",
+                        ) { screen ->
+                            when (screen) {
+                                Destination.UPSCALE -> UpscaleScreen(inputs, options, progress, installed, vm)
+                                Destination.SETTINGS -> SettingsScreen(settings, installed, vm)
+                            }
                         }
                     }
                 }
@@ -118,8 +120,8 @@ private fun PixoraRoot(vm: PixoraViewModel = viewModel()) {
 @Composable
 private fun RowScope.NavBarItems(selected: Destination, onSelect: (Destination) -> Unit) {
     val entries = listOf(
-        Triple(Destination.UPSCALE, stringResource(R.string.upscale), Icons.Rounded.AutoAwesome),
-        Triple(Destination.SETTINGS, stringResource(R.string.settings), Icons.Rounded.Tune),
+        Triple(Destination.UPSCALE, t("upscale"), Icons.Rounded.AutoAwesome),
+        Triple(Destination.SETTINGS, t("settings"), Icons.Rounded.Tune),
     )
     entries.forEach { (destination, label, icon) ->
         NavigationBarItem(
@@ -134,8 +136,8 @@ private fun RowScope.NavBarItems(selected: Destination, onSelect: (Destination) 
 @Composable
 private fun ColumnScope.NavRailItems(selected: Destination, onSelect: (Destination) -> Unit) {
     val entries = listOf(
-        Triple(Destination.UPSCALE, stringResource(R.string.upscale), Icons.Rounded.AutoAwesome),
-        Triple(Destination.SETTINGS, stringResource(R.string.settings), Icons.Rounded.Tune),
+        Triple(Destination.UPSCALE, t("upscale"), Icons.Rounded.AutoAwesome),
+        Triple(Destination.SETTINGS, t("settings"), Icons.Rounded.Tune),
     )
     entries.forEach { (destination, label, icon) ->
         NavigationRailItem(
@@ -173,7 +175,7 @@ private fun UpscaleScreen(
     ) {
         item {
             Text("Pixora", style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.primary)
-            Text(stringResource(R.string.app_tagline), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(t("app_tagline"), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         item {
             ImagePickerCard(inputs, onPick = { picker.launch(arrayOf("image/*")) }, onClear = vm::clearImages)
@@ -204,7 +206,7 @@ private fun UpscaleScreen(
                 ) {
                     Icon(if (options.modelId in installed) Icons.Rounded.AutoAwesome else Icons.Rounded.Download, null)
                     Spacer(Modifier.width(10.dp))
-                    Text(stringResource(if (options.modelId in installed) R.string.start_upscale else R.string.download_and_start))
+                    Text(t(if (options.modelId in installed) "start_upscale" else "download_and_start"))
                 }
             }
         }
@@ -226,15 +228,15 @@ private fun ImagePickerCard(inputs: List<InputImage>, onPick: () -> Unit, onClea
                     Icon(Icons.Rounded.AddPhotoAlternate, null, Modifier.padding(16.dp).size(30.dp))
                 }
                 Spacer(Modifier.height(18.dp))
-                Text(stringResource(R.string.choose_images), style = MaterialTheme.typography.titleLarge)
-                Text(stringResource(R.string.choose_images_hint), color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = .72f))
+                Text(t("choose_images"), style = MaterialTheme.typography.titleLarge)
+                Text(t("choose_images_hint"), color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = .72f))
             }
         } else {
             Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.selected_count, inputs.size), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
-                    TextButton(onClick = onClear) { Text(stringResource(R.string.clear)) }
-                    FilledTonalButton(onClick = onPick) { Icon(Icons.Rounded.Add, null); Text(stringResource(R.string.add_more)) }
+                    Text(t("selected_count", inputs.size), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                    TextButton(onClick = onClear) { Text(t("clear")) }
+                    FilledTonalButton(onClick = onPick) { Icon(Icons.Rounded.Add, null); Text(t("add_more")) }
                 }
                 inputs.take(4).forEach { image ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -258,7 +260,7 @@ private fun ImagePickerCard(inputs: List<InputImage>, onPick: () -> Unit, onClea
 private fun ModelPicker(selected: String, installed: Set<String>, onSelect: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val model = ModelCatalog.builtIn.first { it.id == selected }
-    SectionCard(title = stringResource(R.string.model), icon = Icons.Rounded.Memory) {
+    SectionCard(title = t("model"), icon = Icons.Rounded.Memory) {
         Surface(
             onClick = { expanded = true },
             color = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -268,9 +270,9 @@ private fun ModelPicker(selected: String, installed: Set<String>, onSelect: (Str
             Row(Modifier.padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(model.title, style = MaterialTheme.typography.titleMedium)
-                    Text(model.description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(t("model_${model.id}_description"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                if (selected in installed) Icon(Icons.Rounded.CheckCircle, stringResource(R.string.model_downloaded), tint = MaterialTheme.colorScheme.tertiary)
+                if (selected in installed) Icon(Icons.Rounded.CheckCircle, t("model_downloaded"), tint = MaterialTheme.colorScheme.tertiary)
                 else Icon(Icons.Rounded.CloudDownload, null)
             }
         }
@@ -280,7 +282,7 @@ private fun ModelPicker(selected: String, installed: Set<String>, onSelect: (Str
                     text = {
                         Column {
                             Text(item.title)
-                            Text(item.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(t("model_${item.id}_description"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     leadingIcon = { Icon(if (item.id in installed) Icons.Rounded.CheckCircle else Icons.Rounded.CloudDownload, null) },
@@ -289,13 +291,13 @@ private fun ModelPicker(selected: String, installed: Set<String>, onSelect: (Str
                 )
             }
         }
-        model.licenseNote?.let { Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error) }
+        model.licenseNote?.let { Text(t("non_commercial_model"), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error) }
     }
 }
 
 @Composable
 private fun ScalePicker(selected: Int, onSelect: (Int) -> Unit) {
-    SectionCard(title = stringResource(R.string.scale), icon = Icons.Rounded.ZoomOutMap) {
+    SectionCard(title = t("scale"), icon = Icons.Rounded.ZoomOutMap) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf(2, 3, 4).forEach { scale ->
                 val active = selected == scale
@@ -309,7 +311,7 @@ private fun ScalePicker(selected: Int, onSelect: (Int) -> Unit) {
 
 @Composable
 private fun OutputCard(options: UpscaleOptions, onFormat: (OutputFormat) -> Unit, onFolder: () -> Unit, onRemember: (Boolean) -> Unit) {
-    SectionCard(title = stringResource(R.string.output), icon = Icons.Rounded.FolderOpen) {
+    SectionCard(title = t("output"), icon = Icons.Rounded.FolderOpen) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutputFormat.entries.forEach { format -> FilterChip(selected = format == options.format, onClick = { onFormat(format) }, label = { Text(format.name) }) }
         }
@@ -318,14 +320,14 @@ private fun OutputCard(options: UpscaleOptions, onFormat: (OutputFormat) -> Unit
                 Icon(Icons.Rounded.CreateNewFolder, null)
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.default_folder), style = MaterialTheme.typography.labelLarge)
+                    Text(t("default_folder"), style = MaterialTheme.typography.labelLarge)
                     Text(if (options.outputFolder == null) "Pictures/Pixora" else options.outputFolder.lastPathSegment.orEmpty(), maxLines = 1, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Icon(Icons.Rounded.ChevronRight, null)
             }
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(stringResource(R.string.save_defaults), Modifier.weight(1f))
+            Text(t("save_defaults"), Modifier.weight(1f))
             Switch(options.remember, onCheckedChange = onRemember)
         }
     }
@@ -338,12 +340,12 @@ private fun AdvancedCard(options: UpscaleOptions, update: ((UpscaleOptions) -> U
         Row(Modifier.fillMaxWidth().clickable { expanded = !expanded }.padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Rounded.Tune, null)
             Spacer(Modifier.width(12.dp))
-            Text(stringResource(R.string.advanced), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            Text(t("advanced"), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
             Icon(if (expanded) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore, null)
         }
         AnimatedVisibility(expanded) {
             Column(Modifier.padding(start = 18.dp, end = 18.dp, bottom = 18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("${stringResource(R.string.tile_size)}: ${if (options.tileSize == 0) "Auto" else options.tileSize}")
+                Text("${t("tile_size")}: ${if (options.tileSize == 0) t("auto") else options.tileSize}")
                 Slider(
                     value = when (options.tileSize) { 64 -> 1f; 128 -> 2f; 256 -> 3f; else -> 0f },
                     onValueChange = { value ->
@@ -380,11 +382,11 @@ private fun ProcessingCard(progress: UpscaleProgress, onCancel: () -> Unit) {
             }
             Spacer(Modifier.width(18.dp))
             Column(Modifier.weight(1f)) {
-                Text(if (progress.stage == JobStage.DOWNLOADING) stringResource(R.string.model_download) else stringResource(R.string.processing), style = MaterialTheme.typography.titleLarge)
+                Text(if (progress.stage == JobStage.DOWNLOADING) t("model_download") else t("processing"), style = MaterialTheme.typography.titleLarge)
                 if (progress.currentName.isNotBlank()) Text(progress.currentName, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 if (progress.total > 0) Text("${progress.completed}/${progress.total}", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            IconButton(onClick = onCancel) { Icon(Icons.Rounded.Close, stringResource(R.string.cancel)) }
+            IconButton(onClick = onCancel) { Icon(Icons.Rounded.Close, t("cancel")) }
         }
     }
 }
@@ -395,7 +397,7 @@ private fun ErrorCard(message: String) {
         Row(Modifier.padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Rounded.ErrorOutline, null)
             Spacer(Modifier.width(12.dp))
-            Column { Text(stringResource(R.string.failed), style = MaterialTheme.typography.titleMedium); Text(message) }
+            Column { Text(t("failed"), style = MaterialTheme.typography.titleMedium); Text(message) }
         }
     }
 }
@@ -423,10 +425,11 @@ private fun ResultScreen(inputs: List<InputImage>, outputs: List<android.net.Uri
     val before = inputs.getOrNull(index)?.uri
     val after = outputs.getOrNull(index)
 
+    val comparisonDescription = t("comparison_divider")
     Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onDone) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.done)) }
-            Text(stringResource(R.string.compare), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
+            IconButton(onClick = onDone) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, t("done")) }
+            Text(t("compare"), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
             Text("${index + 1}/${outputs.size}")
         }
         BoxWithConstraints(
@@ -441,28 +444,28 @@ private fun ResultScreen(inputs: List<InputImage>, outputs: List<android.net.Uri
                 },
             contentAlignment = Alignment.Center,
         ) {
-            AsyncImage(before, stringResource(R.string.before), Modifier.fillMaxSize().graphicsLayer(scaleX = zoom, scaleY = zoom, translationX = pan.x, translationY = pan.y), contentScale = ContentScale.Fit)
+            AsyncImage(before, t("before"), Modifier.fillMaxSize().graphicsLayer(scaleX = zoom, scaleY = zoom, translationX = pan.x, translationY = pan.y), contentScale = ContentScale.Fit)
             AsyncImage(
                 after,
-                stringResource(R.string.after),
+                t("after"),
                 Modifier.fillMaxSize().graphicsLayer(scaleX = zoom, scaleY = zoom, translationX = pan.x, translationY = pan.y)
                     .drawWithContent { clipRect(right = size.width * divider) { this@drawWithContent.drawContent() } },
                 contentScale = ContentScale.Fit,
             )
-            Box(Modifier.fillMaxHeight().width(3.dp).align(Alignment.CenterStart).offset(x = maxWidth * divider).background(MaterialTheme.colorScheme.primary))
-            Surface(Modifier.align(Alignment.TopStart).padding(12.dp), shape = CircleShape, color = MaterialTheme.colorScheme.scrim.copy(alpha = .64f)) { Text(stringResource(R.string.after), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) }
-            Surface(Modifier.align(Alignment.TopEnd).padding(12.dp), shape = CircleShape, color = MaterialTheme.colorScheme.scrim.copy(alpha = .64f)) { Text(stringResource(R.string.before), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) }
+            Box(Modifier.fillMaxHeight().width(3.dp).align(AbsoluteAlignment.CenterLeft).absoluteOffset(x = maxWidth * divider).background(MaterialTheme.colorScheme.primary))
+            Surface(Modifier.align(AbsoluteAlignment.TopLeft).padding(12.dp), shape = CircleShape, color = MaterialTheme.colorScheme.scrim.copy(alpha = .64f)) { Text(t("after"), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) }
+            Surface(Modifier.align(AbsoluteAlignment.TopRight).padding(12.dp), shape = CircleShape, color = MaterialTheme.colorScheme.scrim.copy(alpha = .64f)) { Text(t("before"), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)) }
         }
         Slider(
             value = divider,
             onValueChange = { divider = it },
-            modifier = Modifier.semantics { contentDescription = "Comparison divider" },
+            modifier = Modifier.semantics { contentDescription = comparisonDescription },
         )
         if (outputs.size > 1) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             FilledTonalIconButton(onClick = { index = (index - 1).coerceAtLeast(0) }, enabled = index > 0) { Icon(Icons.Rounded.ChevronLeft, null) }
             FilledTonalIconButton(onClick = { index = (index + 1).coerceAtMost(outputs.lastIndex) }, enabled = index < outputs.lastIndex) { Icon(Icons.Rounded.ChevronRight, null) }
         }
-        Button(onClick = onDone, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.done)) }
+        Button(onClick = onDone, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(t("done")) }
     }
 }
 
@@ -472,41 +475,89 @@ private fun SettingsScreen(settings: AppSettings, installed: Set<String>, vm: Pi
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(stringResource(R.string.settings), style = MaterialTheme.typography.displaySmall)
-        SectionCard(stringResource(R.string.appearance), Icons.Rounded.Palette) {
+        Text(t("settings"), style = MaterialTheme.typography.displaySmall)
+        LanguagePicker(settings.languageTag, vm::saveLanguage)
+        SectionCard(t("appearance"), Icons.Rounded.Palette) {
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
                 ThemeMode.entries.forEachIndexed { index, mode ->
                     SegmentedButton(
                         selected = settings.themeMode == mode,
                         onClick = { vm.saveTheme(mode) },
                         shape = SegmentedButtonDefaults.itemShape(index, ThemeMode.entries.size),
-                        label = { Text(stringResource(when (mode) { ThemeMode.SYSTEM -> R.string.system; ThemeMode.LIGHT -> R.string.light; ThemeMode.DARK -> R.string.dark })) },
+                        label = { Text(t(when (mode) { ThemeMode.SYSTEM -> "system"; ThemeMode.LIGHT -> "light"; ThemeMode.DARK -> "dark" })) },
                     )
                 }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) { Text("Dynamic color"); Text("Use your device color palette", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                Column(Modifier.weight(1f)) { Text(t("dynamic_color")); Text(t("dynamic_color_hint"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                 Switch(settings.dynamicColor, onCheckedChange = vm::saveDynamicColor)
             }
         }
-        SectionCard(stringResource(R.string.models), Icons.Rounded.Memory) {
+        SectionCard(t("models"), Icons.Rounded.Memory) {
             ModelCatalog.builtIn.forEach { model ->
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) { Text(model.title, style = MaterialTheme.typography.titleMedium); Text(if (model.id in installed) stringResource(R.string.model_downloaded) else stringResource(R.string.model_download), color = MaterialTheme.colorScheme.onSurfaceVariant) }
-                    if (model.id in installed) IconButton(onClick = { vm.deleteModel(model.id) }) { Icon(Icons.Rounded.DeleteOutline, stringResource(R.string.delete)) }
+                    Column(Modifier.weight(1f)) { Text(model.title, style = MaterialTheme.typography.titleMedium); Text(if (model.id in installed) t("model_downloaded") else t("model_download"), color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                    if (model.id in installed) IconButton(onClick = { vm.deleteModel(model.id) }) { Icon(Icons.Rounded.DeleteOutline, t("delete")) }
                 }
             }
         }
-        SectionCard(stringResource(R.string.processing), Icons.Rounded.Speed) {
-            ListItem(
-                leadingContent = { Icon(if (vm.hasVulkan) Icons.Rounded.Bolt else Icons.Rounded.Memory, null) },
-                colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-            ) { Text(if (vm.hasVulkan) stringResource(R.string.vulkan_ready) else stringResource(R.string.cpu_fallback)) }
-        }
-        SectionCard(stringResource(R.string.about), Icons.Rounded.Info) {
-            Text(stringResource(R.string.about_body))
+        SectionCard(t("about"), Icons.Rounded.Info) {
+            Text(t("about_body"))
             Text("Pixora 0.1.0 · AGPL-3.0", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
         }
         Spacer(Modifier.height(12.dp))
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun LanguagePicker(selected: String, onSelect: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    val systemLabel = t("system")
+    val choices = remember(systemLabel) {
+        listOf(AppLanguage(AppLanguages.SYSTEM, systemLabel)) + AppLanguages.supported
+    }
+    SectionCard(t("language"), Icons.Rounded.Language) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it },
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            OutlinedTextField(
+                value = choices.first { it.tag == selected }.label,
+                onValueChange = {},
+                modifier = Modifier.fillMaxWidth().menuAnchor(
+                    type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                    enabled = true,
+                ),
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.heightIn(max = 240.dp),
+            ) {
+                choices.forEachIndexed { index, language ->
+                    val isSelected = language.tag == selected
+                    SelectableDropdownMenuItem(
+                        selected = isSelected,
+                        onClick = {
+                            expanded = false
+                            onSelect(language.tag)
+                        },
+                        text = {
+                            Text(language.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        },
+                        shapes = MenuDefaults.itemShape(index = index, count = choices.size),
+                        selectedLeadingIcon = if (isSelected) {
+                            { Icon(Icons.Rounded.CheckCircle, contentDescription = null) }
+                        } else null,
+                    )
+                }
+            }
+        }
     }
 }
