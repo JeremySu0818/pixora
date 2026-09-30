@@ -9,19 +9,45 @@ object NativeUpscaler {
 
     external fun hasVulkan(): Boolean
 
-    external fun upscale(
-        input: Bitmap,
-        output: Bitmap,
+    external fun createSession(
         paramPath: String,
         modelPath: String,
+        useVulkan: Boolean,
+        sessionHandle: LongArray,
+    ): String?
+
+    external fun upscaleTile(
+        sessionHandle: Long,
+        input: Bitmap,
+        output: Bitmap,
         targetScale: Int,
         tileSize: Int,
-        useVulkan: Boolean,
+        progressCallback: ProgressCallback,
+    ): String?
+
+    external fun destroySession(sessionHandle: Long)
+
+    external fun encodeJpeg(
+        rawRgbaPath: String,
+        outputFd: Int,
+        width: Int,
+        height: Int,
+        quality: Int,
+        progressCallback: ProgressCallback,
+    ): String?
+
+    external fun encodeWebp(
+        rawRgbaPath: String,
+        outputFd: Int,
+        width: Int,
+        height: Int,
+        quality: Int,
+        lossless: Boolean,
         progressCallback: ProgressCallback,
     ): String?
 }
 
 fun interface ProgressCallback {
-    /** Returns false when native processing should stop at the next tile boundary. */
+    /** Returns false when processing should stop at the next inference tile boundary. */
     fun onProgress(fraction: Float): Boolean
 }

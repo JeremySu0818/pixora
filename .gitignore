@@ -23,6 +23,7 @@ captures/
 
 # Native build output and downloaded toolchains
 app/src/main/cpp/third_party/ncnn-20260526-android-vulkan/
+app/src/main/cpp/third_party/image-codecs/
 **/test-results/
 *.hprof
 
